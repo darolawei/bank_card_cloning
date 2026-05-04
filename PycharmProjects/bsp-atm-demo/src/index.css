@@ -1,0 +1,175 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+}
+
+:root {
+  --background: 0 0% 8%;
+  --foreground: 0 0% 95%;
+  --border: 0 0% 20%;
+  --app-font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --app-font-mono: 'Courier New', 'Courier', monospace;
+  --radius: 0.5rem;
+
+  /* BSP brand */
+  --bsp-red: #CC0000;
+  --bsp-red-dark: #990000;
+  --bsp-red-light: #E52020;
+  --bsp-gold: #F5A323;
+  --bsp-white: #F8F9FA;
+}
+
+@layer base {
+  * { @apply border-border box-border; }
+  body { @apply font-sans antialiased m-0 p-0 overflow-hidden; background: #141414; color: #f0f0f0; }
+}
+
+/* ---- Particle ---- */
+@keyframes fly-particle {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: var(--particle-end) scale(0.15); opacity: 0; }
+}
+.particle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 10px;
+  font-family: monospace;
+  font-weight: bold;
+  color: #00ff88;
+  text-shadow: 0 0 8px #00ff88;
+  white-space: nowrap;
+  z-index: 9999;
+  animation: fly-particle 1.4s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
+}
+
+/* ---- Card slot glow ---- */
+@keyframes slot-glow {
+  0%,100% { box-shadow: 0 0 6px 2px #CC000066, inset 0 0 8px #99000044; }
+  50%      { box-shadow: 0 0 14px 5px #CC0000aa, inset 0 0 16px #CC000066; }
+}
+.slot-glow { animation: slot-glow 1.8s ease-in-out infinite; }
+
+/* ---- Arrow bounce ---- */
+@keyframes arrow-bounce {
+  0%,100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+.arrow-bounce { animation: arrow-bounce 0.7s ease-in-out infinite; }
+
+/* ---- Cursor blink ---- */
+@keyframes cursor-blink {
+  0%,100% { opacity: 1; } 50% { opacity: 0; }
+}
+.cursor-blink { animation: cursor-blink 0.8s steps(1) infinite; }
+
+/* ---- ATM screen scanline ---- */
+@keyframes scanline {
+  0%   { transform: translateY(-100%); }
+  100% { transform: translateY(400px); }
+}
+.scanline {
+  position: absolute; width: 100%; height: 2px;
+  background: rgba(255,255,255,0.03);
+  pointer-events: none;
+  animation: scanline 5s linear infinite;
+  z-index: 10;
+}
+
+/* ---- Success flash ---- */
+@keyframes success-flash {
+  0%   { opacity: 0; transform: scale(0.88); }
+  15%  { opacity: 1; transform: scale(1.03); }
+  80%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1); }
+}
+.success-flash { animation: success-flash 3.2s ease forwards; }
+
+/* ---- Skimmer reveal ---- */
+@keyframes skimmer-reveal {
+  0%   { opacity: 0; transform: translateY(-12px) scale(0.96); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.skimmer-reveal { animation: skimmer-reveal 0.45s ease forwards; }
+
+/* ---- Danger pulse ---- */
+@keyframes danger-pulse {
+  0%,100% { border-color: #ff3300; box-shadow: 0 0 10px #ff330055; }
+  50%      { border-color: #ff6600; box-shadow: 0 0 28px #ff6600aa; }
+}
+.danger-pulse { animation: danger-pulse 1.4s ease-in-out infinite; }
+
+/* ---- Warning banner ---- */
+@keyframes warn-pulse {
+  0%,100% { background-color: rgba(204,0,0,0.92); }
+  50%      { background-color: rgba(229,32,32,0.98); }
+}
+.warning-banner { animation: warn-pulse 1s ease-in-out infinite; }
+
+/* ---- Log line appear ---- */
+@keyframes log-appear {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.log-line { animation: log-appear 0.28s ease forwards; }
+
+/* ---- Card drag ---- */
+.bsp-card {
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+  transition: filter 0.15s;
+}
+.bsp-card:active { cursor: grabbing; filter: drop-shadow(0 12px 32px rgba(0,0,0,0.7)); }
+.bsp-card.dragging { cursor: grabbing; filter: drop-shadow(0 16px 40px rgba(0,0,0,0.8)) brightness(1.08); }
+
+/* ---- Card insert animation ---- */
+@keyframes card-insert {
+  0%   { transform: translateX(0) translateY(0) scaleX(1) scaleY(1); opacity: 1; }
+  60%  { transform: translateX(var(--card-dx)) translateY(var(--card-dy)) scaleX(0.7) scaleY(0.5); opacity: 0.8; }
+  100% { transform: translateX(var(--card-dx)) translateY(var(--card-dy)) scaleX(0) scaleY(0); opacity: 0; }
+}
+.card-inserting { animation: card-insert 0.55s cubic-bezier(0.4,0,0.2,1) forwards; }
+
+/* ---- Clock tick ---- */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fade-in 0.4s ease forwards; }
+
+/* ---- Keypad press ---- */
+.keypad-key { transition: transform 0.07s, background 0.07s; }
+.keypad-key:active { transform: scale(0.91); }
+
+/* ---- PIN dot pop ---- */
+@keyframes pin-dot-pop {
+  0%   { transform: scale(0); }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+.pin-dot-pop { animation: pin-dot-pop 0.2s ease forwards; }
+
+/* ---- Screen transition ---- */
+@keyframes screen-slide-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.screen-slide-in { animation: screen-slide-in 0.35s ease forwards; }
+
+/* ---- Processing spinner ---- */
+@keyframes spin-ring {
+  from { stroke-dashoffset: 220; }
+  to   { stroke-dashoffset: 0; }
+}

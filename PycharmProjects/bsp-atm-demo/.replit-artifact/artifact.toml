@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "BSP ATM Security Awareness Prototype"
+version = "1.0.0"
+id = "artifacts/bsp-atm-demo"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21207
+
+[services.development]
+run = "pnpm --filter @workspace/bsp-atm-demo run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/bsp-atm-demo", "run", "build" ]
+publicDir = "artifacts/bsp-atm-demo/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21207"
+BASE_PATH = "/"
